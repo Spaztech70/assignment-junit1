@@ -1,0 +1,53 @@
+Circle1Test.java:
+Test scale Circle1
+Error was discovered by test scaleCircle1
+ * Factor was added instead of being multiplied to radius. 
+ * Running the corrected test resulted in a double rounding error. 
+ * Computation corrected: the option chosen to correct the error was to use 
+ *    the BigDecimal class and set precision to DECIMAL32 (7 digits).
+Circle.java
+   ->scale(double factor)
+	// radius = radius + factor; // !!ERROR!! scale factor is a multiple of radius, not an addition to radius
+	bigRadius = BigDecimal.valueOf((radius * factor)).round(MathContext.DECIMAL32); // what the code should be
+
+Test an intersect withIn Bounds using Circle1
+Error was discovered by test intersectCircle1 
+ * Computation corrected to the Pythagorean theorem and is now compared
+ *    to the combined radius of both circles.
+Circle1.java
+   ->intersects(Circle other)
+	// if (Math.abs(center.x - other.center.x) < radius &&
+        	// Math.abs(center.y - other.center.y) < radius)
+	double aSquared = (other.center.x - center.x) * (other.center.x - center.x);
+	double bSquared = (other.center.y - center.y) * (other.center.y - center.y);
+	double c = Math.sqrt(aSquared + bSquared);
+	if ( c < (other.radius + radius) )
+
+Circle2Test.java:
+Test scale Circle2
+Error was discovered by test scaleCircle2..
+ * Factor was added instead of being multiplied to radius.
+ * Running the corrected test resulted in a double rounding error.
+ * Computation corrected: the option chosen to correct the error was to use 
+ *    the BigDecimal class and set precision to DECIMAL32 (7 digits).
+Circle.java
+   ->scale(double factor)
+	// radius = radius + factor; // !!ERROR!! scale factor is a multiple of radius, not an addition to radius
+	bigRadius = BigDecimal.valueOf((radius * factor)).round(MathContext.DECIMAL32); // what the code should be
+
+Test an intersect withIn Bounds using Circle2
+Error was discovered by test intersectCircle2 * 
+ * Computation corrected. The calculated distance between the circles is now 
+ *    compared to the combined radius of both circles.
+Circle2.java
+   ->intersects(Circle other)
+	// if (d < radius)		//!!! ERROR !!! d should be compared with the sum of the two circle radii
+   	if (d < (other.radius + radius) )
+
+Test an intersect withIn Bounds using Circle2
+Error was discovered by test intersectCircle2InBounds
+ * Corrected center.y to + yOffset
+Circle2.java
+   ->Circle2(double x, double y, double radius)
+	// super(y,x,radius);	// units are in wrong order
+	super(x,y,radius);
